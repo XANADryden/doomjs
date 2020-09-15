@@ -13,98 +13,98 @@ class Void(){
 //am_map.h
 
 if(typeof __AMMAP_H__ == "undefined"){
-  const __AMMAP_H__ = "defined";
+  const __AMMAP_H__ = "random value that means it's defined, but has no other meaning";
 
   // Used by ST StatusBar stuff.
-  const AM_MSGHEADER = () => (('a'<<24)+('m'<<16));
-  const AM_MSGENTERED = () => (AM_MSGHEADER | ('e'<<8))
-  const AM_MSGEXITED = () => (AM_MSGHEADER | ('x'<<8))
+  const AM_MSGHEADER = (('a'<<24)+('m'<<16));
+  const AM_MSGENTERED = (AM_MSGHEADER | ('e'<<8))
+  const AM_MSGEXITED = (AM_MSGHEADER | ('x'<<8))
   
   
   // Called by main loop.
   //boolean AM_Responder (event_t* ev);
   
   // Called by main loop.
-  const AM_Ticker = () => (new Void());
+  const AM_Ticker = (new Void());
   
   // Called by main loop,
   // called instead of view drawer if automap active.
-  const AM_Drawer = () => (new Void());
+  const AM_Drawer = (new Void());
   
   // Called to force the automap to quit
   // if the level is completed while it is up.
-  const AM_Stop = () => (new Void());
+  const AM_Stop = (new Void());
 }
 
 //am_map.c
 const
 REDS        = (256-5*16),
 REDRANGE    = 16,
-BLUES		    = (256-4*16+8),
-BLUERANGE	  = 8,
-GREENS		  = (7*16),
+BLUES	    = (256-4*16+8),
+BLUERANGE   = 8,
+GREENS	    = (7*16),
 GREENRANGE  = 16,
-GRAYS		    = (6*16),
+GRAYS	    = (6*16),
 GRAYSRANGE  = 16,
-BROWNS		  = (4*16),
+BROWNS	    = (4*16),
 BROWNRANGE  = 16,
-YELLOWS		  = (256-32+7),
-YELLOWRANGE	= 1,
-BLACK		    = 0,
-WHITE		    = (256-47);
+YELLOWS	    = (256-32+7),
+YELLOWRANGE = 1,
+BLACK	    = 0,
+WHITE	    = (256-47);
 
 // Automap colors
 const
-BACKGROUND	     = BLACK,
-YOURCOLORS	     = WHITE,
-YOURRANGE	       = 0,
-WALLCOLORS	     = REDS,
-WALLRANGE	       = REDRANGE,
-TSWALLCOLORS	   = GRAYS,
-TSWALLRANGE	     = GRAYSRANGE,
-FDWALLCOLORS	   = BROWNS,
-FDWALLRANGE	     = BROWNRANGE,
-CDWALLCOLORS	   = YELLOWS,
-CDWALLRANGE	     = YELLOWRANGE,
-THINGCOLORS	     = GREENS,
-THINGRANGE	     = GREENRANGE,
+BACKGROUND	 = BLACK,
+YOURCOLORS	 = WHITE,
+YOURRANGE	 = 0,
+WALLCOLORS	 = REDS,
+WALLRANGE	 = REDRANGE,
+TSWALLCOLORS	 = GRAYS,
+TSWALLRANGE	 = GRAYSRANGE,
+FDWALLCOLORS	 = BROWNS,
+FDWALLRANGE	 = BROWNRANGE,
+CDWALLCOLORS	 = YELLOWS,
+CDWALLRANGE	 = YELLOWRANGE,
+THINGCOLORS	 = GREENS,
+THINGRANGE	 = GREENRANGE,
 SECRETWALLCOLORS = WALLCOLORS,
 SECRETWALLRANGE  = WALLRANGE,
-GRIDCOLORS	     = (GRAYS + GRAYSRANGE/2),
-GRIDRANGE	       = 0,
-XHAIRCOLORS	     = GRAYS;
+GRIDCOLORS	 = (GRAYS + GRAYSRANGE/2),
+GRIDRANGE	 = 0,
+XHAIRCOLORS	 = GRAYS;
 
 // drawing stuff
-const	FB = 0;
+const FB = 0;
 
 const
-AM_PANDOWNKEY	  = KEY_DOWNARROW,
-AM_PANUPKEY	    = KEY_UPARROW,
+AM_PANDOWNKEY	= KEY_DOWNARROW,
+AM_PANUPKEY	= KEY_UPARROW,
 AM_PANRIGHTKEY  = KEY_RIGHTARROW,
-AM_PANLEFTKEY	  = KEY_LEFTARROW,
-AM_ZOOMINKEY	  = '=',
-AM_ZOOMOUTKEY	  = '-',
-AM_STARTKEY	    = KEY_TAB,
-AM_ENDKEY	      = KEY_TAB,
-AM_GOBIGKEY	    = '0',
-AM_FOLLOWKEY	  = 'f',
-AM_GRIDKEY	    = 'g',
-AM_MARKKEY	    = 'm',
+AM_PANLEFTKEY	= KEY_LEFTARROW,
+AM_ZOOMINKEY	= '=',
+AM_ZOOMOUTKEY	= '-',
+AM_STARTKEY	= KEY_TAB,
+AM_ENDKEY	= KEY_TAB,
+AM_GOBIGKEY	= '0',
+AM_FOLLOWKEY	= 'f',
+AM_GRIDKEY	= 'g',
+AM_MARKKEY	= 'm',
 AM_CLEARMARKKEY	= 'c';
 
 const AM_NUMMARKPOINTS = 10;
 
 // scale on entry
-const INITSCALEMTOF = () => (.2*FRACUNIT);
+const INITSCALEMTOF = (.2*FRACUNIT);//i dont actually know if #define a (b+c) is const a = () => (b+c) or if it's const a=b+c
 // how much the automap moves window per tic in frame-buffer coordinates
 // moves 140 pixels in 1 second
 const F_PANINC = 4;
 // how much zoom-in per tic
 // goes to 2x in 1 second
-const M_ZOOMIN = () => (Math.floor(1.02*FRACUNIT));
+const M_ZOOMIN = (Math.floor(1.02*FRACUNIT));
 // how much zoom-out per tic
 // pulls out to 0.5x in 1 second
-const M_ZOOMOUT = () => (Math.floor(FRACUNIT/1.02));
+const M_ZOOMOUT = (Math.floor(FRACUNIT/1.02));
 
 // translates between frame-buffer and map distances
 const
@@ -267,30 +267,31 @@ var player_arrow=(function() {
     { { -R+3*R/8, 0 }, { -R+R/8, R/4 } }, // >>--->
     { { -R+3*R/8, 0 }, { -R+R/8, -R/4 } }
 };*/
-//:::CONTINUE:::
-#define NUMPLYRLINES (sizeof(player_arrow)/sizeof(mline_t))
 
-#define R ((8*PLAYERRADIUS)/7)
-mline_t cheat_player_arrow[] = {
-    { { -R+R/8, 0 }, { R, 0 } }, // -----
-    { { R, 0 }, { R-R/2, R/6 } },  // ----->
-    { { R, 0 }, { R-R/2, -R/6 } },
-    { { -R+R/8, 0 }, { -R-R/8, R/6 } }, // >----->
-    { { -R+R/8, 0 }, { -R-R/8, -R/6 } },
-    { { -R+3*R/8, 0 }, { -R+R/8, R/6 } }, // >>----->
-    { { -R+3*R/8, 0 }, { -R+R/8, -R/6 } },
-    { { -R/2, 0 }, { -R/2, -R/6 } }, // >>-d--->
-    { { -R/2, -R/6 }, { -R/2+R/6, -R/6 } },
-    { { -R/2+R/6, -R/6 }, { -R/2+R/6, R/4 } },
-    { { -R/6, 0 }, { -R/6, -R/6 } }, // >>-dd-->
-    { { -R/6, -R/6 }, { 0, -R/6 } },
-    { { 0, -R/6 }, { 0, R/4 } },
-    { { R/6, R/4 }, { R/6, -R/7 } }, // >>-ddt->
-    { { R/6, -R/7 }, { R/6+R/32, -R/7-R/32 } },
-    { { R/6+R/32, -R/7-R/32 }, { R/6+R/10, -R/7 } }
-};
-#undef R
-#define NUMCHEATPLYRLINES (sizeof(cheat_player_arrow)/sizeof(mline_t))
+const NUMPLYRLINES = (sizeof(player_arrow)/sizeof(mline_t));//WE ARE SCREWED!!!  .length != sizeof()   In fact, sizeof has no JS equevalent.  PLS HELP.  We need an estimate on the size of player_arrow and mline_t as they are in C.
+
+var cheat_player_arrow = (function(){
+	let R = ((8*PLAYERRADIUS)/7);
+	return [
+    new mline_t( new mpoint_t( -R+R/8, 0 ), new mpoint_t( R, 0 ) ), // -----
+    new mline_t( new mpoint_t( R, 0 ), new mpoint_t( R-R/2, R/6 ) ),  // ----->
+    new mline_t( new mpoint_t( R, 0 ), new mpoint_t( R-R/2, -R/6 ) ),
+    new mline_t( new mpoint_t( -R+R/8, 0 ), new mpoint_t( -R-R/8, R/6 ) ), // >----->
+    new mline_t( new mpoint_t( -R+R/8, 0 ), new mpoint_t( -R-R/8, -R/6 ) ),
+    new mline_t( new mpoint_t( -R+3*R/8, 0 ), new mpoint_t( -R+R/8, R/6 ) ), // >>----->
+    new mline_t( new mpoint_t( -R+3*R/8, 0 ), new mpoint_t( -R+R/8, -R/6 ) ),
+    new mline_t( new mpoint_t( -R/2, 0 ), new mpoint_t( -R/2, -R/6 ) ), // >>-d--->
+    new mline_t( new mpoint_t( -R/2, -R/6 ), new mpoint_t( -R/2+R/6, -R/6 ) ),
+    new mline_t( new mpoint_t( -R/2+R/6, -R/6 ), new mpoint_t( -R/2+R/6, R/4 ) ),
+    new mline_t( new mpoint_t( -R/6, 0 ), new mpoint_t( -R/6, -R/6 ) ), // >>-dd-->
+    new mline_t( new mpoint_t( -R/6, -R/6 ), new mpoint_t( 0, -R/6 ) ),
+    new mline_t( new mpoint_t( 0, -R/6 ), new mpoint_t( 0, R/4 ) ),
+    new mline_t( new mpoint_t( R/6, R/4 ), new mpoint_t( R/6, -R/7 ) ), // >>-ddt->
+    new mline_t( new mpoint_t( R/6, -R/7 ), new mpoint_t( R/6+R/32, -R/7-R/32 ) ),
+    new mline_t( new mpoint_t( R/6+R/32, -R/7-R/32 ), new mpoint_t( R/6+R/10, -R/7 ) )
+	];
+})();//:::CONTINUE:::
+const NUMCHEATPLYRLINES (sizeof(cheat_player_arrow)/sizeof(mline_t))
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
