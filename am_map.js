@@ -309,18 +309,7 @@ var thintriangle_guy = [
 const NUMTHINTRIANGLEGUYLINES = (sizeof(thintriangle_guy)/sizeof(mline_t));
 
 
-class Int{
-  constructor(n) {
-    if(typeof n == "number") {
-    
-    }else{
-      if(n.type == "int" || n.type == "long" || n.type == "char" || n.type == "bool" || n.type == "short") {this.value=n}
-    }
-    if(!(y < -2,147,483,648 || y > 2,147,483,647)){
-      this.y = y
-    }else{ throw(new Error("New Value Exceeds Bounds!")) }
-  }
-}
+
 
 static int 	cheating = 0;
 static int 	grid = 0;
