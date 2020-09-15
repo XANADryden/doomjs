@@ -245,9 +245,9 @@ class islope_t {
 //  A line drawing of the player pointing right,
 //   starting from the middle.
 //
-var player_arrow=(function() {
-	let R = ((8*PLAYERRADIUS)/7);
-	return [
+
+let R = ((8*PLAYERRADIUS)/7);
+var player_arrow = [
   	new mline_t( new mpoint_t(-R+R/8, 0), new mpoint_t(R, 0) ), // -----
   	new mline_t( new mpoint_t(R, 0), new mpoint_t(R-R/2, R/4) ),  // ----->
   	new mline_t( new mpoint_t(R, 0), new mpoint_t(R-R/2, -R/4) ),
@@ -255,8 +255,7 @@ var player_arrow=(function() {
   	new mline_t( new mpoint_t(-R+R/8, 0), new mpoint_t(-R-R/8, -R/4) ),
   	new mline_t( new mpoint_t(-R+3*R/8, 0), new mpoint_t(-R+R/8, R/4) ), // >>--->
   	new mline_t( new mpoint_t(-R+3*R/8, 0), new mpoint_t(-R+R/8, -R/4) )
-	]
-})();
+];
 	
 /*mline_t player_arrow[] = {
     { { -R+R/8, 0 }, { R, 0 } }, // -----
@@ -270,9 +269,9 @@ var player_arrow=(function() {
 
 const NUMPLYRLINES = (sizeof(player_arrow)/sizeof(mline_t));//WE ARE SCREWED!!!  .length != sizeof()   In fact, sizeof has no JS equevalent.  PLS HELP.  We need an estimate on the size of player_arrow and mline_t as they are in C.
 
-var cheat_player_arrow = (function(){
-	let R = ((8*PLAYERRADIUS)/7);
-	return [
+
+R = ((8*PLAYERRADIUS)/7);
+var cheat_player_arrow = [
     new mline_t( new mpoint_t( -R+R/8, 0 ), new mpoint_t( R, 0 ) ), // -----
     new mline_t( new mpoint_t( R, 0 ), new mpoint_t( R-R/2, R/6 ) ),  // ----->
     new mline_t( new mpoint_t( R, 0 ), new mpoint_t( R-R/2, -R/6 ) ),
@@ -282,37 +281,46 @@ var cheat_player_arrow = (function(){
     new mline_t( new mpoint_t( -R+3*R/8, 0 ), new mpoint_t( -R+R/8, -R/6 ) ),
     new mline_t( new mpoint_t( -R/2, 0 ), new mpoint_t( -R/2, -R/6 ) ), // >>-d--->
     new mline_t( new mpoint_t( -R/2, -R/6 ), new mpoint_t( -R/2+R/6, -R/6 ) ),
-    new mline_t( new mpoint_t( -R/2+R/6, -R/6 ), new mpoint_t( -R/2+R/6, R/4 ) ),
+   	new mline_t( new mpoint_t( -R/2+R/6, -R/6 ), new mpoint_t( -R/2+R/6, R/4 ) ),
     new mline_t( new mpoint_t( -R/6, 0 ), new mpoint_t( -R/6, -R/6 ) ), // >>-dd-->
     new mline_t( new mpoint_t( -R/6, -R/6 ), new mpoint_t( 0, -R/6 ) ),
     new mline_t( new mpoint_t( 0, -R/6 ), new mpoint_t( 0, R/4 ) ),
     new mline_t( new mpoint_t( R/6, R/4 ), new mpoint_t( R/6, -R/7 ) ), // >>-ddt->
     new mline_t( new mpoint_t( R/6, -R/7 ), new mpoint_t( R/6+R/32, -R/7-R/32 ) ),
     new mline_t( new mpoint_t( R/6+R/32, -R/7-R/32 ), new mpoint_t( R/6+R/10, -R/7 ) )
-	];
-})();//:::CONTINUE:::
-const NUMCHEATPLYRLINES (sizeof(cheat_player_arrow)/sizeof(mline_t))
+];
+//:::CONTINUE:::
+const NUMCHEATPLYRLINES = (sizeof(cheat_player_arrow)/sizeof(mline_t));
 
-#define R (FRACUNIT)
-mline_t triangle_guy[] = {
-    { { -.867*R, -.5*R }, { .867*R, -.5*R } },
-    { { .867*R, -.5*R } , { 0, R } },
-    { { 0, R }, { -.867*R, -.5*R } }
-};
-#undef R
-#define NUMTRIANGLEGUYLINES (sizeof(triangle_guy)/sizeof(mline_t))
+R = (FRACUNIT);
+var triangle_guy = [
+    new mline_t( new mpoint_t( -.867*R, -.5*R ), new mpoint_t( .867*R, -.5*R ) ),
+    new mline_t( new mpoint_t( .867*R, -.5*R ) , new mpoint_t( 0, R ) ),
+    new mline_t( new mpoint_t( 0, R ), new mpoint_t( -.867*R, -.5*R ) )
+];
+const NUMTRIANGLEGUYLINES = (sizeof(triangle_guy)/sizeof(mline_t));
 
-#define R (FRACUNIT)
-mline_t thintriangle_guy[] = {
-    { { -.5*R, -.7*R }, { R, 0 } },
-    { { R, 0 }, { -.5*R, .7*R } },
-    { { -.5*R, .7*R }, { -.5*R, -.7*R } }
-};
-#undef R
-#define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))
+R = (FRACUNIT)
+var thintriangle_guy = [
+    new mline_t( new mpoint_t( -.5*R, -.7*R ), new mpoint_t( R, 0 ) ),
+    new mline_t( new mpoint_t( R, 0 ), new mpoint_t( -.5*R, .7*R ) ),
+    new mline_t( new mpoint_t( -.5*R, .7*R ), new mpoint_t( -.5*R, -.7*R ) )
+];
+const NUMTHINTRIANGLEGUYLINES = (sizeof(thintriangle_guy)/sizeof(mline_t));
 
 
-
+class Int{
+  constructor(n) {
+    if(typeof n == "number") {
+    
+    }else{
+      if(n.type == "int" || n.type == "long" || n.type == "char" || n.type == "bool" || n.type == "short") {this.value=n}
+    }
+    if(!(y < -2,147,483,648 || y > 2,147,483,647)){
+      this.y = y
+    }else{ throw(new Error("New Value Exceeds Bounds!")) }
+  }
+}
 
 static int 	cheating = 0;
 static int 	grid = 0;
