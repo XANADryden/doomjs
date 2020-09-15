@@ -176,23 +176,19 @@ class fline_t {
 class mpoint_t {
   constructor(x, y) {
     
-    if(x.type != "fixed_t") throw(new Error("Wrong Type!"));
-    this.x = x;
+    if(x.type == "fixed_t") { this.x = x } else { this.x = new fixed_t(x) }
     
-    if(y.type != "fixed_t") throw(new Error("Wrong Type!"));
-    this.y = y;
+    if(y.type == "fixed_t") { this.y = y } else { this.y = new fixed_t(y) }
     
     this.type = "mpoint_t"
   }
   
   set x(n) {
-    if(n.type != "fixed_t") throw(new Error("Wrong Type!"));
-    this.x = n;
+    if(n.type == "fixed_t") { this.x = n } else { this.x = new fixed_t(n) }
   }
   
   set y(n) {
-    if(n.type != "fixed_t") throw(new Error("Wrong Type!"));
-    this.y = n
+    if(n.type == "fixed_t") { this.y = n } else { this.y = new fixed_t(n) }
   }
 }
 
@@ -249,9 +245,20 @@ class islope_t {
 //  A line drawing of the player pointing right,
 //   starting from the middle.
 //
-const R = () => ((8*PLAYERRADIUS)/7);
-//:::CONTINUE:::
-mline_t player_arrow[] = {
+var player_arrow=(function() {
+	let R = ((8*PLAYERRADIUS)/7);
+	return [
+  	new mline_t( new mpoint_t(-R+R/8, 0), new mpoint_t(R, 0) ), // -----
+  	new mline_t( new mpoint_t(R, 0), new mpoint_t(R-R/2, R/4) ),  // ----->
+  	new mline_t( new mpoint_t(R, 0), new mpoint_t(R-R/2, -R/4) ),
+  	new mline_t( new mpoint_t(-R+R/8, 0), new mpoint_t(-R-R/8, R/4) ), // >---->
+  	new mline_t( new mpoint_t(-R+R/8, 0), new mpoint_t(-R-R/8, -R/4) ),
+  	new mline_t( new mpoint_t(-R+3*R/8, 0), new mpoint_t(-R+R/8, R/4) ), // >>--->
+  	new mline_t( new mpoint_t(-R+3*R/8, 0), new mpoint_t(-R+R/8, -R/4) )
+	]
+})();
+	
+/*mline_t player_arrow[] = {
     { { -R+R/8, 0 }, { R, 0 } }, // -----
     { { R, 0 }, { R-R/2, R/4 } },  // ----->
     { { R, 0 }, { R-R/2, -R/4 } },
@@ -259,8 +266,8 @@ mline_t player_arrow[] = {
     { { -R+R/8, 0 }, { -R-R/8, -R/4 } },
     { { -R+3*R/8, 0 }, { -R+R/8, R/4 } }, // >>--->
     { { -R+3*R/8, 0 }, { -R+R/8, -R/4 } }
-};
-#undef R
+};*/
+//:::CONTINUE:::
 #define NUMPLYRLINES (sizeof(player_arrow)/sizeof(mline_t))
 
 #define R ((8*PLAYERRADIUS)/7)
