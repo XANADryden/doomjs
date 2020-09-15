@@ -13,5 +13,6 @@ This port is going for 100% engine accuracy, and will give options for changing 
 
 - doom.wad (obviously)
 - https://github.com/id-Software/DOOM
+- https://github.com/yvesgurcan/wadjs
 - https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html
 - https://www.bell-labs.com/usr/dmr/www/cman.pdf
