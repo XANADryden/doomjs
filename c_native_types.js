@@ -139,6 +139,78 @@ class c_native{
       }
 
     };
+
+    this.char = class char {
+      constructor(value) {
+        this.max = ;
+        this.min = ;
+        this.type = "char";
+      }
+    };
+    
+    this.short = class short {
+      constructor(value) {
+        this.max = 32767;
+        this.min = -32768;
+        this.type = "short";
+      }
+    };
+
+    this.int = class int {
+      constructor(value) {
+        this.max = ;
+        this.min = ;
+        this.type = "int";
+      }
+    };
+
+    this.long = class long {
+      constructor(value) {
+        this.max = ;
+        this.min = ;
+        this.type = "long";
+      }
+    };
+
+    this.u_char = class u_char {
+      constructor(value) {
+        this.max = 255;
+        this.min = 0;
+        this.type = "u_char";
+      }
+    };
+
+    this.u_short = class u_short {
+      constructor(value) {
+        this.max = ;
+        this.min = ;
+        this.type = "u_short";
+      }
+    };
+
+    this.u_int = class u_int {
+      constructor(value) {
+        this.max = ;
+        this.min = ;
+        this.type = "u_int";
+      }
+    };
+
+    this.u_long = class u_long{
+      constructor(value) {
+        this.max = ;
+        this.min = ;
+        this.type = "u_long";
+      }
+    };
+
+    this. = class {
+      constructor(value) {
+        this.max = ;
+        this.min = ;
+        this.type = "";
+      }
+    };
   }
 
 }
