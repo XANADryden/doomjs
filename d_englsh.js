@@ -12,7 +12,7 @@ __D_ENGLSH__ = 1;
 // D_Main.C
 //
 D_DEVSTR = "Development mode ON.\n";
-D_CDROM	= "CD-ROM Version: default.cfg from c:\\doomdata\n";
+D_CDROM	 = "CD-ROM Version: default.cfg from c:\\doomdata\n";
 
 //
 //	M_Menu.C
@@ -46,13 +46,13 @@ ENDGAME	= "are you sure you want to end the game?\n\n"+PRESSYN;
 
 DOSY		= "(press y to quit)";
 
-DETAILHI	= "High detail";
-DETAILLO	= "Low detail";
-GAMMALVL0	= "Gamma correction OFF";
-GAMMALVL1	= "Gamma correction level 1";
-GAMMALVL2	= "Gamma correction level 2";
-GAMMALVL3	= "Gamma correction level 3";
-GAMMALVL4	= "Gamma correction level 4";
+DETAILHI	  = "High detail";
+DETAILLO	  = "Low detail";
+GAMMALVL0	  = "Gamma correction OFF";
+GAMMALVL1	  = "Gamma correction level 1";
+GAMMALVL2	  = "Gamma correction level 2";
+GAMMALVL3	  = "Gamma correction level 3";
+GAMMALVL4	  = "Gamma correction level 4";
 EMPTYSTRING	= "empty slot";
 
 //
