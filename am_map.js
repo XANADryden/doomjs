@@ -2,6 +2,7 @@
 
 //AutoMap module
 
+if(typeof am_map == "undefined")globalThis.am_map={};
 
 //temporary until we can find a better solution
 class Void(){
@@ -300,7 +301,7 @@ var triangle_guy = [
 ];
 const NUMTRIANGLEGUYLINES = (sizeof(triangle_guy)/sizeof(mline_t));
 
-R = (FRACUNIT)
+R = (FRACUNIT);
 var thintriangle_guy = [
     new mline_t( new mpoint_t( -.5*R, -.7*R ), new mpoint_t( R, 0 ) ),
     new mline_t( new mpoint_t( R, 0 ), new mpoint_t( -.5*R, .7*R ) ),
@@ -310,84 +311,90 @@ const NUMTHINTRIANGLEGUYLINES = (sizeof(thintriangle_guy)/sizeof(mline_t));
 
 
 
+//static int
+am_map. 	cheating = 0;
+am_map. 	grid = 0;
 
-static int 	cheating = 0;
-static int 	grid = 0;
+am_map. 	leveljuststarted = 1; 	// kluge until AM_LevelInit() is called
 
-static int 	leveljuststarted = 1; 	// kluge until AM_LevelInit() is called
-
-boolean    	automapactive = false;
-static int 	finit_width = SCREENWIDTH;
-static int 	finit_height = SCREENHEIGHT - 32;
+var    	automapactive = false;
+am_map. 	finit_width = SCREENWIDTH;               //static int
+am_map.		finit_height = SCREENHEIGHT - 32;
 
 // location of window on screen
-static int 	f_x;
-static int	f_y;
+am_map. 	f_x;
+am_map.		f_y;
 
 // size of window on screen
-static int 	f_w;
-static int	f_h;
+am_map. 	f_w;
+am_map.		f_h;
 
-static int 	lightlev; 		// used for funky strobing effect
-static byte*	fb; 			// pseudo-frame buffer
-static int 	amclock;
+am_map. 	lightlev; 		// used for funky strobing effect
+am_map.		fb = c_native.byte(); 	// pseudo-frame buffer   //static byte pointer
+am_map. 	amclock;		//static int
 
-static mpoint_t m_paninc; // how far the window pans each tic (map coords)
-static fixed_t 	mtof_zoommul; // how far the window zooms in each tic (map coords)
-static fixed_t 	ftom_zoommul; // how far the window zooms in each tic (fb coords)
 
-static fixed_t 	m_x, m_y;   // LL x,y where the window is on the map (map coords)
-static fixed_t 	m_x2, m_y2; // UR x,y where the window is on the map (map coords)
+am_map.		m_paninc; // how far the window pans each tic (map coords)             //mpoint_t
+am_map.		mtof_zoommul; // how far the window zooms in each tic (map coords)     // fixed_t 	
+am_map.		ftom_zoommul; // how far the window zooms in each tic (fb coords)
+
+am_map. 	m_x; am_map.m_y;   // LL x,y where the window is on the map (map coords)
+am_map.		m_x2; am_map.m_y2; // UR x,y where the window is on the map (map coords)
 
 //
 // width/height of window on map (map coords)
 //
-static fixed_t 	m_w;
-static fixed_t	m_h;
+am_map. 	m_w;       //static fixed_t
+am_map.		m_h;
 
 // based on level size
-static fixed_t 	min_x;
-static fixed_t	min_y; 
-static fixed_t 	max_x;
-static fixed_t  max_y;
+am_map. 	min_x;
+am_map.		min_y; 
+am_map. 	max_x;
+am_map.		max_y;
 
-static fixed_t 	max_w; // max_x-min_x,
-static fixed_t  max_h; // max_y-min_y
+am_map. 	max_w; // max_x-min_x,
+am_map.		max_h; // max_y-min_y
 
 // based on player size
-static fixed_t 	min_w;
-static fixed_t  min_h;
+am_map. 	min_w;
+am_map.   min_h;
 
 
-static fixed_t 	min_scale_mtof; // used to tell when to stop zooming out
-static fixed_t 	max_scale_mtof; // used to tell when to stop zooming in
+am_map. 	min_scale_mtof; // used to tell when to stop zooming out
+am_map. 	max_scale_mtof; // used to tell when to stop zooming in
 
 // old stuff for recovery later
-static fixed_t old_m_w, old_m_h;
-static fixed_t old_m_x, old_m_y;
+am_map. old_m_w;am_map. old_m_h;
+am_map. old_m_x;am_map. old_m_y;
 
 // old location used by the Follower routine
-static mpoint_t f_oldloc;
+am_map. f_oldloc;      //static mpoint_t
 
 // used by MTOF to scale from map-to-frame-buffer coords
-static fixed_t scale_mtof = INITSCALEMTOF;
+am_map. scale_mtof = INITSCALEMTOF;             //static fixed_t
 // used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
-static fixed_t scale_ftom;
+am_map. scale_ftom;
 
-static player_t *plr; // the player represented by an arrow
+//static player_t *plr
+am_map. plr=new player_t(); // the player represented by an arrow
 
-static patch_t *marknums[10]; // numbers used for marking by the automap
-static mpoint_t markpoints[AM_NUMMARKPOINTS]; // where the points are
-static int markpointnum = 0; // next point to be assigned
+//static patch_t *marknums[10];
+am_map. marknums=[]; // numbers used for marking by the automap
+am_map. markpoints=[]; // where the points are      mpoint_t [AM_NUMMARKPOINTS]
+for(var c = 0; c<AM_NUMMARKPOINTS; c++){
+	am_map.markpoints.push();
+}
+am_map. markpointnum = 0; // next point to be assigned                   //int
 
-static int followplayer = 1; // specifies whether to follow the player around
+am_map. followplayer = 1; // specifies whether to follow the player around
 
-static unsigned char cheat_amap_seq[] = { 0xb2, 0x26, 0x26, 0x2e, 0xff };
-static cheatseq_t cheat_amap = { cheat_amap_seq, 0 };
+am_map. cheat_amap_seq = [ 0xb2, 0x26, 0x26, 0x2e, 0xff ];    //unsigned char
+am_map. cheat_amap = [ cheat_amap_seq, 0 ];							//cheatseeq_t
 
-static boolean stopped = true;
+am_map. stopped = true;                 //static boolean
 
-extern boolean viewactive;
+globalThis. viewactive = false;              //extern boolean
 //extern byte screens[][SCREENWIDTH*SCREENHEIGHT];
 
 
@@ -403,80 +410,78 @@ V_MarkRect
 // segment in map coordinates (with the upright y-axis n' all) so
 // that it can be used with the brain-dead drawing stuff.
 
-void
-AM_getIslope
-( mline_t*	ml,
-  islope_t*	is )
+
+//mline_t* ml, islope_t* is
+function AM_getIslope( ml, is )
 {
-    int dx, dy;
+		
+    var dx, dy; //int
 
-    dy = ml->a.y - ml->b.y;
-    dx = ml->b.x - ml->a.x;
-    if (!dy) is->islp = (dx<0?-MAXINT:MAXINT);
-    else is->islp = FixedDiv(dx, dy);
-    if (!dx) is->slp = (dy<0?-MAXINT:MAXINT);
-    else is->slp = FixedDiv(dy, dx);
-
+    dy = ml.a.y - ml.b.y;
+    dx = ml.b.x - ml.a.x;
+    is.islp = dy ? FixedDiv(dx, dy) : (dx < 0 ? -MAXINT : MAXINT);
+    is.slp = dx ? FixedDiv(dy, dx) : (dy < 0 ? -MAXINT : MAXINT);
+	
 }
 
 //
 //
 //
-void AM_activateNewScale(void)
+function AM_activateNewScale()
 {
-    m_x += m_w/2;
-    m_y += m_h/2;
-    m_w = FTOM(f_w);
-    m_h = FTOM(f_h);
-    m_x -= m_w/2;
-    m_y -= m_h/2;
-    m_x2 = m_x + m_w;
-    m_y2 = m_y + m_h;
+    am_map.m_x += am_map.m_w/2;
+    am_map.m_y += am_map.m_h/2;
+    am_map.m_w = FTOM(am_map.f_w);
+    am_map.m_h = FTOM(am_map.f_h);
+    am_map.m_x -= am_map.m_w/2;
+    am_map.m_y -= am_map.m_h/2;
+    am_map.m_x2 = am_map.m_x + am_map.m_w;
+    am_map.m_y2 = am_map.m_y + am_map.m_h;
 }
 
 //
 //
 //
-void AM_saveScaleAndLoc(void)
+function AM_saveScaleAndLoc()
 {
-    old_m_x = m_x;
-    old_m_y = m_y;
-    old_m_w = m_w;
-    old_m_h = m_h;
+    am_map.old_m_x = am_map.m_x;
+    am_map.old_m_y = am_map.m_y;
+    am_map.old_m_w = am_map.m_w;
+    am_map.old_m_h = am_map.m_h;
 }
 
 //
 //
 //
-void AM_restoreScaleAndLoc(void)
+function AM_restoreScaleAndLoc()
 {
 
-    m_w = old_m_w;
-    m_h = old_m_h;
-    if (!followplayer)
+    am_map.m_w = am_map.old_m_w;
+    am_map.m_h = am_map.old_m_h;
+    if (!am_map.followplayer)
     {
-	m_x = old_m_x;
-	m_y = old_m_y;
+		am_map.m_x = am_map.old_m_x;
+		am_map.m_y = am_map.old_m_y;
     } else {
-	m_x = plr->mo->x - m_w/2;
-	m_y = plr->mo->y - m_h/2;
+		am_map.m_x = am_map.plr.mo.x - am_map.m_w/2;
+		am_map.m_y = am_map.plr.mo.y - am_map.m_h/2;
     }
-    m_x2 = m_x + m_w;
-    m_y2 = m_y + m_h;
+    am_map.m_x2 = am_map.m_x + am_map.m_w;
+    am_map.m_y2 = am_map.m_y + am_map.m_h;
 
     // Change the scaling multipliers
-    scale_mtof = FixedDiv(f_w<<FRACBITS, m_w);
-    scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
+    am_map.scale_mtof = FixedDiv(am_map.f_w<<FRACBITS, am_map.m_w);
+    am_map.scale_ftom = FixedDiv(FRACUNIT, am_map.scale_mtof);
 }
 
 //
 // adds a marker at the current location
 //
-void AM_addMark(void)
+function AM_addMark()
 {
-    markpoints[markpointnum].x = m_x + m_w/2;
-    markpoints[markpointnum].y = m_y + m_h/2;
-    markpointnum = (markpointnum + 1) % AM_NUMMARKPOINTS;
+    am_map.markpoints[am_map.markpointnum].x = am_map.m_x + am_map.m_w/2;
+    am_map.markpoints[am_map.markpointnum].y = am_map.m_y + am_map.m_h/2;
+    am_map.markpointnum = (am_map.markpointnum + 1) % AM_NUMMARKPOINTS;
 
 }
 
@@ -484,39 +489,40 @@ void AM_addMark(void)
 // Determines bounding box of all vertices,
 // sets global variables controlling zoom range.
 //
-void AM_findMinMaxBoundaries(void)
+function AM_findMinMaxBoundaries()
 {
-    int i;
-    fixed_t a;
-    fixed_t b;
+    var i;
+	//fixed_t
+    var a;
+    var b;
 
-    min_x = min_y =  MAXINT;
-    max_x = max_y = -MAXINT;
+    am_map.min_x = am_map.min_y =  MAXINT;
+    am_map.max_x = am_map.max_y = -MAXINT;
   
-    for (i=0;i<numvertexes;i++)
+    for (i=0;i<am_map.numvertexes;i++)
     {
-	if (vertexes[i].x < min_x)
-	    min_x = vertexes[i].x;
-	else if (vertexes[i].x > max_x)
-	    max_x = vertexes[i].x;
+	if (vertexes[i].x < am_map.min_x)
+	    am_map.min_x = vertexes[i].x;
+	else if (vertexes[i].x > am_map.max_x)
+	    am_map.max_x = vertexes[i].x;
     
-	if (vertexes[i].y < min_y)
-	    min_y = vertexes[i].y;
-	else if (vertexes[i].y > max_y)
-	    max_y = vertexes[i].y;
+	if (vertexes[i].y < am_map.min_y)
+	    am_map.min_y = vertexes[i].y;
+	else if (vertexes[i].y > am_map.max_y)
+	    am_map.max_y = vertexes[i].y;
     }
   
-    max_w = max_x - min_x;
-    max_h = max_y - min_y;
+    am_map.max_w = am_map.max_x - am_map.min_x;
+    am_map.max_h = am_map.max_y - am_map.min_y;
 
-    min_w = 2*PLAYERRADIUS; // const? never changed?
-    min_h = 2*PLAYERRADIUS;
+    am_map.min_w = 2*PLAYERRADIUS; // const? never changed?
+    am_map.min_h = 2*PLAYERRADIUS;
 
-    a = FixedDiv(f_w<<FRACBITS, max_w);
-    b = FixedDiv(f_h<<FRACBITS, max_h);
+    a = FixedDiv(am_map.f_w<<FRACBITS, am_map.max_w);
+    b = FixedDiv(am_map.f_h<<FRACBITS, am_map.max_h);
   
-    min_scale_mtof = a < b ? a : b;
-    max_scale_mtof = FixedDiv(f_h<<FRACBITS, 2*PLAYERRADIUS);
+    am_map.min_scale_mtof = a < b ? a : b;
+    am_map.max_scale_mtof = FixedDiv(am_map.f_h<<FRACBITS, 2*PLAYERRADIUS);
 
 }
 
@@ -524,53 +530,53 @@ void AM_findMinMaxBoundaries(void)
 //
 //
 //
-void AM_changeWindowLoc(void)
+function AM_changeWindowLoc()
 {
-    if (m_paninc.x || m_paninc.y)
+    if (am_map.m_paninc.x || am_map.m_paninc.y)
     {
-	followplayer = 0;
-	f_oldloc.x = MAXINT;
+	am_map.followplayer = 0;
+	am_map.f_oldloc.x = MAXINT;
     }
 
-    m_x += m_paninc.x;
-    m_y += m_paninc.y;
+    am_map.m_x += am_map.m_paninc.x;
+    am_map.m_y += am_map.m_paninc.y;
 
-    if (m_x + m_w/2 > max_x)
-	m_x = max_x - m_w/2;
-    else if (m_x + m_w/2 < min_x)
-	m_x = min_x - m_w/2;
+    if (am_map.m_x + am_map.m_w/2 > am_map.max_x)
+		am_map.m_x = am_map.max_x - am_map.m_w/2;
+    else if (am_map.m_x + am_map.m_w/2 < am_map.min_x)
+		am_map.m_x = am_map.min_x - am_map.m_w/2;
   
-    if (m_y + m_h/2 > max_y)
-	m_y = max_y - m_h/2;
-    else if (m_y + m_h/2 < min_y)
-	m_y = min_y - m_h/2;
+    if (am_map.m_y + am_map.m_h/2 > am_map.max_y)
+		am_map.m_y = am_map.max_y - am_map.m_h/2;
+    else if (am_map.m_y + am_map.m_h/2 < am_map.min_y)
+		am_map.m_y = am_map.min_y - am_map.m_h/2;
 
-    m_x2 = m_x + m_w;
-    m_y2 = m_y + m_h;
+    am_map.m_x2 = am_map.m_x + am_map.m_w;
+    am_map.m_y2 = am_map.m_y + am_map.m_h;
 }
 
 
 //
 //
 //
-void AM_initVariables(void)
+function AM_initVariables()
 {
-    int pnum;
-    static event_t st_notify = { ev_keyup, AM_MSGENTERED };
+    var pnum;   //int
+    am_map. st_notify = new event_t ([ ev_keyup, AM_MSGENTERED ]);    //static event_t st_notify
 
-    automapactive = true;
-    fb = screens[0];
+    am_map. automapactive = true;
+    am_map. fb = screens[0];
 
-    f_oldloc.x = MAXINT;
-    amclock = 0;
+    am_map.f_oldloc.x = MAXINT;
+    am_map.amclock = 0;
     lightlev = 0;
 
-    m_paninc.x = m_paninc.y = 0;
-    ftom_zoommul = FRACUNIT;
-    mtof_zoommul = FRACUNIT;
+    am_map.m_paninc.x = am_map.m_paninc.y = 0;
+    am_map.ftom_zoommul = FRACUNIT;
+    am_map.mtof_zoommul = FRACUNIT;
 
-    m_w = FTOM(f_w);
-    m_h = FTOM(f_h);
+    am_map.m_w = FTOM(am_map.f_w);
+    am_map.m_h = FTOM(am_map.f_h);
 
     // find player to center on initially
     if (!playeringame[pnum = consoleplayer])
@@ -578,75 +584,76 @@ void AM_initVariables(void)
 	    if (playeringame[pnum])
 		break;
   
-    plr = &players[pnum];
-    m_x = plr->mo->x - m_w/2;
-    m_y = plr->mo->y - m_h/2;
+    am_map.plr = players[pnum];
+    am_map.m_x = am_map.plr.mo.x - am_map.m_w/2;
+    am_map.m_y = am_map.plr.mo.y - am_map.m_h/2;
     AM_changeWindowLoc();
 
     // for saving & restoring
-    old_m_x = m_x;
-    old_m_y = m_y;
-    old_m_w = m_w;
-    old_m_h = m_h;
+    am_map.old_m_x = am_map.m_x;
+    am_map.old_m_y = am_map.m_y;
+    am_map.old_m_w = am_map.m_w;
+    am_map.old_m_h = am_map.m_h;
 
     // inform the status bar of the change
-    ST_Responder(&st_notify);
+    ST_Responder(am_map.st_notify);
 
 }
 
 //
 // 
 //
-void AM_loadPics(void)
+function AM_loadPics()
 {
-    int i;
-    char namebuf[9];
+    var i;   //int
+    var namebuf=[];  //char [9]
   
     for (i=0;i<10;i++)
     {
 	sprintf(namebuf, "AMMNUM%d", i);
-	marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
+	am_map.marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
     }
 
 }
 
-void AM_unloadPics(void)
+function AM_unloadPics()
 {
-    int i;
+    var i;   //int
   
-    for (i=0;i<10;i++)
-	Z_ChangeTag(marknums[i], PU_CACHE);
+    for (i=0;i<10;i++){
+	Z_ChangeTag(am_map.marknums[i], PU_CACHE);
+	}
 
 }
 
-void AM_clearMarks(void)
+function AM_clearMarks()
 {
-    int i;
+    var i;
 
     for (i=0;i<AM_NUMMARKPOINTS;i++)
-	markpoints[i].x = -1; // means empty
-    markpointnum = 0;
+	am_map.markpoints[i].x = -1; // means empty
+    am_map.markpointnum = 0;
 }
 
 //
 // should be called at the start of every level
 // right now, i figure it out myself
 //
-void AM_LevelInit(void)
+function AM_LevelInit()
 {
     leveljuststarted = 0;
 
-    f_x = f_y = 0;
-    f_w = finit_width;
-    f_h = finit_height;
+    am_map.f_x = am_map.f_y = 0;
+    am_map.f_w = finit_width;
+    am_map.f_h = finit_height;
 
     AM_clearMarks();
 
     AM_findMinMaxBoundaries();
-    scale_mtof = FixedDiv(min_scale_mtof, (int) (0.7*FRACUNIT));
-    if (scale_mtof > max_scale_mtof)
-	scale_mtof = min_scale_mtof;
-    scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
+    am_map.scale_mtof = FixedDiv(am_map.min_scale_mtof, Math.floor(0.7*FRACUNIT));
+    if (am_map.scale_mtof > am_map.max_scale_mtof)
+	am_map.scale_mtof = am_map.min_scale_mtof;
+    am_map.scale_ftom = FixedDiv(FRACUNIT, am_map.scale_mtof);
 }
 
 
@@ -655,18 +662,18 @@ void AM_LevelInit(void)
 //
 //
 //
-void AM_Stop (void)
+function AM_Stop ()
 {
-    static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
+    am_map.st_notify = new event_t([ 0, ev_keyup, AM_MSGEXITED ]);  //static event_t st_notify 
 
     AM_unloadPics();
-    automapactive = false;
-    ST_Responder(&st_notify);
-    stopped = true;
+    am_map.automapactive = false;
+    ST_Responder(am_map.st_notify);
+    am_map.stopped = true;
 }
 
 //
-//
+//:::CONTINUE:::
 //
 void AM_Start (void)
 {
