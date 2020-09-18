@@ -158,16 +158,16 @@ class c_native{
 
     this.int = class int {
       constructor(value) {
-        this.max = ;
-        this.min = ;
+        this.max = 2147483647;
+        this.min = -2147483648;
         this.type = "int";
       }
     };
 
     this.long = class long {
       constructor(value) {
-        this.max = ;
-        this.min = ;
+        this.max = 2147483647;
+        this.min = -2147483648;
         this.type = "long";
       }
     };
@@ -182,35 +182,43 @@ class c_native{
 
     this.u_short = class u_short {
       constructor(value) {
-        this.max = ;
-        this.min = ;
+        this.max = 65535;
+        this.min = 0;
         this.type = "u_short";
       }
     };
 
     this.u_int = class u_int {
       constructor(value) {
-        this.max = ;
-        this.min = ;
+        this.max = 4294967295;
+        this.min = 0;
         this.type = "u_int";
       }
     };
 
-    this.u_long = class u_long{
+    this.u_long = class u_long {
       constructor(value) {
-        this.max = ;
-        this.min = ;
+        this.max = 4294967295;
+        this.min = 0;
         this.type = "u_long";
       }
     };
-
-    this. = class {
+    
+    this.bool = class bool{
+      constructor(value) {
+        this.max = 1;
+        this.min = 0;
+        this.type = "bool";
+      }
+    }; 
+    
+    /*this. = class {
       constructor(value) {
         this.max = ;
         this.min = ;
         this.type = "";
       }
-    };
+    };*/
   }
 
 }
