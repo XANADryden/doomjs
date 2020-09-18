@@ -1,5 +1,6 @@
 //d_event.h
 
+
 // Emacs style mode select   -*- C++ -*- 
 //-----------------------------------------------------------------------------
 //
@@ -21,38 +22,42 @@
 //    
 //-----------------------------------------------------------------------------
 
+if(!__D_EVENT__){
+__D_EVENT__={};
 
-#ifndef __D_EVENT__
-#define __D_EVENT__
 
-
-#include "doomtype.h"
+//#include "doomtype.h"
 
 
 //
 // Event handling.
 //
 
-// Input event types.
-typedef enum
+// Input event types
+__D_EVENT__.evtype_t = Object.freeze({type:"evtype_t", class:"enum", ev_keydown:0, ev_keyup:1, ev_mouse:2, ev_joystick:3});
+/*typedef enum
 {
     ev_keydown,
     ev_keyup,
     ev_mouse,
     ev_joystick
-} evtype_t;
-
+} evtype_t;*/
+//Object.assign({},)
+    
 // Event structure.
-typedef struct
+//datas are ints
+__D_EVENT__.event_t = {etype:"event_t", class:"struct", type:0, data1:0, data2:0, data3:0, set type(a){if(a.type=="evtype_t")this.type=a}};
+
+/*typedef struct
 {
     evtype_t	type;
     int		data1;		// keys / mouse/joystick buttons
     int		data2;		// mouse/joystick x move
     int		data3;		// mouse/joystick y move
-} event_t;
+} event_t;*/
 
- 
-typedef enum
+__D_EVENT__.gameaction_t = Object.freeze({ga_nothing:0,ga_loadlevel:1,ga_newgame:2,ga_loadgame:3,ga_savegame:4,ga_playdemo:5,ga_completed:6,ga_victory:7,ga_worlddone:8,ga_screenshot:9})
+/*typedef enum
 {
     ga_nothing,
     ga_loadlevel,
@@ -64,42 +69,44 @@ typedef enum
     ga_victory,
     ga_worlddone,
     ga_screenshot
-} gameaction_t;
+} gameaction_t;*/
 
 
 
 //
 // Button/action code definitions.
 //
-typedef enum
+    //Object.assign({},)
+
+__D_EVENT__.buttoncode_t=Object.freeze(
 {
     // Press "Fire".
-    BT_ATTACK		= 1,
+    BT_ATTACK		: 1,
     // Use button, to open doors, activate switches.
-    BT_USE		= 2,
+    BT_USE		: 2,
 
     // Flag: game events, not really buttons.
-    BT_SPECIAL		= 128,
-    BT_SPECIALMASK	= 3,
+    BT_SPECIAL		: 128,
+    BT_SPECIALMASK	: 3,
     
     // Flag, weapon change pending.
     // If true, the next 3 bits hold weapon num.
-    BT_CHANGE		= 4,
+    BT_CHANGE		: 4,
     // The 3bit weapon mask and shift, convenience.
-    BT_WEAPONMASK	= (8+16+32),
-    BT_WEAPONSHIFT	= 3,
+    BT_WEAPONMASK	: (8+16+32),
+    BT_WEAPONSHIFT	: 3,
 
     // Pause the game.
-    BTS_PAUSE		= 1,
+    BTS_PAUSE		: 1,
     // Save the game at each console.
-    BTS_SAVEGAME	= 2,
+    BTS_SAVEGAME	: 2,
 
     // Savegame slot numbers
     //  occupy the second byte of buttons.    
-    BTS_SAVEMASK	= (4+8+16),
-    BTS_SAVESHIFT 	= 2,
+    BTS_SAVEMASK	: (4+8+16),
+    BTS_SAVESHIFT 	: 2,
   
-} buttoncode_t;
+});
 
 
 
@@ -107,16 +114,21 @@ typedef enum
 //
 // GLOBAL VARIABLES
 //
-#define MAXEVENTS		64
+__D_EVENT__.MAXEVENTS	=	64;
 
-extern  event_t		events[MAXEVENTS];
-extern  int             eventhead;
-extern	int		eventtail;
+    //extern event_t events[MAXEVENTS];
+globalThis.  events=[];
+    for(var c = 0; c<__D_EVENT__.MAXEVENTS; c++){
+        events.push(Object.assign({},__D_EVENT__.event_t));
+    }
+globalThis.eventhead=0;
+globalThis.eventtail=0;
 
-extern  gameaction_t    gameaction;
+globalThis.gameaction = Object.assign({},__D_EVENT__.gameaction_t);
 
 
-#endif
+}
+
 //-----------------------------------------------------------------------------
 //
 // $Log:$
